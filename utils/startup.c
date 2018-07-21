@@ -51,7 +51,3 @@ void Reset_Handler(void){
 		; //loop forever, but we should never be there
 	}
 }
-
-void default_handler(){
-	while(1);
-}

@@ -18,7 +18,7 @@ TARGETFPU := -mfloat-abi=softfp -mfpu=fpv4-sp-d16
 
 # this is a custom made startup script. Should work with a bit everything.
 # in C because who care about performance on startup? Better show waht is going on!
-STARTUPSCRIPT := utils/startup.c utils/vector_table.c
+STARTUPSCRIPTDIR := utils
 # you get the linker script from st peripheric library or from the cmsis
 LINKERSCRIPT := utils/STM32F401VC_FLASH.ld
 
@@ -35,7 +35,7 @@ LD := arm-none-eabi-gcc
 OBJCOPY := arm-none-eabi-objcopy
 OBJSIZE := arm-none-eabi-size
 
-SOURCESC := $(shell find $(SOURCEDIR) -name '*.c') $(shell find $(STDPERIPH) -name '*.c') $(STARTUPSCRIPT)
+SOURCESC := $(shell find $(SOURCEDIR) -name '*.c') $(shell find $(STDPERIPH) -name '*.c') $(shell find $(STARTUPSCRIPTDIR) -name '*.c')
 SOURCESCPP := $(shell find $(SOURCEDIR) -name '*.cpp')
 
 CFLAGS  := -g -Wall -Wno-missing-braces -nostdlib $(OPTIMIZATION)
@@ -58,7 +58,7 @@ OBJECTS := ${addprefix $(BUILDDIR)/,$(OBJECTS)}
 .PHONY: clean
 
 # special case to build STARTUPSCRIPT
-$(BUILDDIR)/$(STARTUPSCRIPT).o: $(STARTUPSCRIPT)
+$(BUILDDIR)/$(STARTUPSCRIPTDIR)/%.c.o: $(STARTUPSCRIPTDIR)/%.c
 	@mkdir -p $(@D)
 	@$(CC) $(CFLAGS) -std=$(CSTD) $(LDFLAGS) $(SOURCETREE) -c $< -o $@
 
